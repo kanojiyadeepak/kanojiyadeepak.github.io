@@ -1,1 +1,1925 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Anniversary - Allu ka Parth 💙</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            background: linear-gradient(135deg, #87CEEB 0%, #FFB6C1 30%, #DDA0DD 70%, #87CEEB 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Name Verification Screen */
+        .name-verification {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #87CEEB 0%, #FFB6C1 50%, #DDA0DD 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 15000;
+            transition: opacity 1s ease-out;
+        }
+
+        .name-verification.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .verification-container {
+            background: linear-gradient(145deg, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.85));
+            padding: 50px 40px;
+            border-radius: 30px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            backdrop-filter: blur(20px);
+            border: 2px solid rgba(0, 102, 204, 0.3);
+            text-align: center;
+            max-width: 500px;
+            width: 90%;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .verification-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, #0066CC, #FFB6C1, #DDA0DD, #87CEEB);
+        }
+
+        .verification-title {
+            font-size: 2.5rem;
+            color: #0066CC;
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+            animation: titlePulse 2s ease-in-out infinite;
+        }
+
+        .verification-subtitle {
+            font-size: 1.3rem;
+            color: #FF69B4;
+            margin-bottom: 30px;
+            font-style: italic;
+        }
+
+        .name-input-container {
+            position: relative;
+            margin-bottom: 30px;
+        }
+
+        .name-input {
+            width: 100%;
+            padding: 20px 25px;
+            font-size: 1.3rem;
+            border: 3px solid rgba(0, 102, 204, 0.3);
+            border-radius: 25px;
+            background: rgba(255, 255, 255, 0.9);
+            color: #0066CC;
+            font-weight: bold;
+            text-align: center;
+            outline: none;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .name-input:focus {
+            border-color: #0066CC;
+            box-shadow: 0 0 20px rgba(0, 102, 204, 0.3);
+            transform: scale(1.02);
+        }
+
+        .name-input::placeholder {
+            color: rgba(0, 102, 204, 0.6);
+            font-style: italic;
+        }
+
+        .progress-container {
+            margin: 20px 0;
+            min-height: 60px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 10px;
+            background: rgba(0, 102, 204, 0.2);
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 15px;
+            position: relative;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #0066CC, #FF69B4);
+            border-radius: 10px;
+            width: 0%;
+            transition: width 0.3s ease;
+            position: relative;
+        }
+
+        .progress-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            animation: shimmer 1.5s infinite;
+        }
+
+        .progress-text {
+            font-size: 1.1rem;
+            color: #0066CC;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .progress-emoji {
+            font-size: 1.5rem;
+            animation: bounce 0.6s ease-in-out;
+        }
+
+        .verification-hearts {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            top: 0;
+            left: 0;
+        }
+
+        .verification-heart {
+            position: absolute;
+            font-size: 1.5rem;
+            animation: floatVerification 4s ease-out infinite;
+        }
+
+        .submit-btn {
+            background: linear-gradient(45deg, #0066CC, #FF69B4);
+            border: none;
+            color: white;
+            font-size: 1.2rem;
+            font-weight: bold;
+            padding: 15px 40px;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 6px 20px rgba(0, 102, 204, 0.4);
+            opacity: 0.5;
+            pointer-events: none;
+        }
+
+        .submit-btn.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .submit-btn.active:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 10px 30px rgba(0, 102, 204, 0.6);
+        }
+
+        .error-message {
+            color: #FF6B6B;
+            font-size: 1rem;
+            margin-top: 15px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .error-message.show {
+            opacity: 1;
+        }
+
+        /* Loading Screen Styles */
+        .loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #87CEEB 0%, #FFB6C1 50%, #DDA0DD 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+            transition: opacity 1s ease-out;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .loading-screen.show {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .loading-screen.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .countdown-container {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .countdown-number {
+            font-size: 8rem;
+            font-weight: bold;
+            color: #0066CC;
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.3);
+            animation: countdownPulse 1s ease-in-out;
+            margin-bottom: 20px;
+        }
+
+        .countdown-text {
+            font-size: 1.5rem;
+            color: #FF69B4;
+            font-weight: bold;
+            margin-bottom: 30px;
+        }
+
+        .loading-hearts {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .loading-heart {
+            position: absolute;
+            font-size: 2rem;
+            animation: floatUp 3s ease-out infinite;
+        }
+
+        .gif-container {
+            display: none;
+            text-align: center;
+            max-width: 90%;
+            width: 400px;
+            margin-bottom: 30px;
+        }
+
+        .gif-container.show {
+            display: block;
+            animation: fadeInScale 1s ease-out;
+        }
+
+        .animated-text {
+            display: none;
+            font-size: 3rem;
+            font-weight: bold;
+            color: #0066CC;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            text-align: center;
+            margin: 20px;
+            line-height: 1.2;
+        }
+
+        .animated-text.show {
+            display: block;
+            animation: textReveal 2s ease-out;
+        }
+
+        .animated-text .word {
+            display: inline-block;
+            opacity: 0;
+            animation: wordPop 0.6s ease-out forwards;
+        }
+
+        .animated-text .word:nth-child(1) { animation-delay: 0.1s; }
+        .animated-text .word:nth-child(2) { animation-delay: 0.3s; }
+        .animated-text .word:nth-child(3) { animation-delay: 0.5s; }
+        .animated-text .word:nth-child(4) { animation-delay: 0.7s; }
+        .animated-text .word:nth-child(5) { animation-delay: 0.9s; }
+
+        /* Main Content Styles */
+        .main-content {
+            opacity: 0;
+            transition: opacity 1s ease-in;
+        }
+
+        .main-content.show {
+            opacity: 1;
+        }
+
+        /* Jahtku themed background */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            overflow: hidden;
+        }
+
+        .particle {
+            position: absolute;
+            border-radius: 50%;
+            animation: float-particles 15s infinite linear;
+        }
+
+        .jahtku-particle {
+            background: #0066CC;
+            width: 8px;
+            height: 8px;
+        }
+
+        .jahtaki-particle {
+            background: #FFB6C1;
+            width: 6px;
+            height: 6px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 60px;
+            animation: fadeInDown 1.5s ease-out;
+            position: relative;
+        }
+
+        .header::before {
+            content: '🤖';
+            position: absolute;
+            top: -20px;
+            left: 20%;
+            font-size: 3rem;
+            animation: bounce 2s infinite;
+        }
+
+        .header::after {
+            content: '👧';
+            position: absolute;
+            top: -20px;
+            right: 20%;
+            font-size: 3rem;
+            animation: bounce 2s infinite 0.5s;
+        }
+
+        .header h1 {
+            font-size: 4rem;
+            color: #0066CC;
+            margin-bottom: 15px;
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.2);
+            position: relative;
+        }
+
+        .header .subtitle {
+            font-size: 2rem;
+            color: #FF69B4;
+            font-style: italic;
+            margin-bottom: 10px;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .header .date {
+            font-size: 1.8rem;
+            color: #4169E1;
+            font-weight: bold;
+            background: rgba(255, 255, 255, 0.3);
+            padding: 10px 20px;
+            border-radius: 25px;
+            display: inline-block;
+            backdrop-filter: blur(10px);
+        }
+
+        .jahtku-jahtaki-section {
+            background: linear-gradient(145deg, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.85));
+            padding: 40px;
+            border-radius: 25px;
+            margin: 40px 0;
+            text-align: center;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+            backdrop-filter: blur(15px);
+            border: 2px solid rgba(0, 102, 204, 0.3);
+        }
+
+        .jahtku-jahtaki-section h2 {
+            color: #0066CC;
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+
+        .jahtku-jahtaki-section p {
+            color: #666;
+            font-size: 1.3rem;
+            line-height: 1.8;
+            margin-bottom: 15px;
+        }
+
+        .love-messages {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 40px;
+            margin-bottom: 60px;
+        }
+
+        .message-card {
+            background: linear-gradient(145deg, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.85));
+            padding: 40px;
+            border-radius: 25px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+            transform: translateY(30px);
+            opacity: 0;
+            animation: slideUp 1s ease-out forwards;
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .message-card.jahtku-theme {
+            border-left: 5px solid #0066CC;
+        }
+
+        .message-card.jahtaki-theme {
+            border-left: 5px solid #FFB6C1;
+        }
+
+        .message-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, #0066CC, #FFB6C1, #DDA0DD, #87CEEB);
+        }
+
+        .message-card:nth-child(1) { animation-delay: 0.3s; }
+        .message-card:nth-child(2) { animation-delay: 0.6s; }
+        .message-card:nth-child(3) { animation-delay: 0.9s; }
+        .message-card:nth-child(4) { animation-delay: 1.2s; }
+        .message-card:nth-child(5) { animation-delay: 1.5s; }
+        .message-card:nth-child(6) { animation-delay: 1.8s; }
+
+        .message-card h3 {
+            color: #0066CC;
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+            position: relative;
+        }
+
+        .message-card p {
+            color: #495057;
+            line-height: 1.8;
+            font-size: 1.2rem;
+        }
+
+        .heart {
+            color: #FF69B4;
+            font-size: 1.3em;
+            animation: heartbeat 2s ease-in-out infinite;
+            display: inline-block;
+        }
+
+        .photo-gallery {
+            margin: 60px 0;
+            text-align: center;
+        }
+
+        .gallery-title {
+            font-size: 2.5rem;
+            color: #0066CC;
+            margin-bottom: 30px;
+            animation: fadeIn 1s ease-out;
+        }
+
+        .anniversary-counter {
+            background: linear-gradient(145deg, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.85));
+            padding: 50px;
+            border-radius: 30px;
+            text-align: center;
+            margin: 60px 0;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+            backdrop-filter: blur(20px);
+            border: 2px solid rgba(0, 102, 204, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .anniversary-counter::before {
+            content: '🤖💙👧';
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 2rem;
+            animation: pulse 2s infinite;
+        }
+
+        .counter-title {
+            font-size: 2.5rem;
+            color: #0066CC;
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .counter-display {
+            font-size: 3.5rem;
+            color: #FF69B4;
+            font-weight: bold;
+            margin: 30px 0;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .counter-subtitle {
+            font-size: 1.3rem;
+            color: #6c757d;
+            font-style: italic;
+        }
+
+        .floating-hearts {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .floating-heart {
+            position: absolute;
+            font-size: 24px;
+            animation: float 8s ease-in-out infinite;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 60px;
+            padding: 40px;
+            background: linear-gradient(145deg, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.85));
+            border-radius: 25px;
+            backdrop-filter: blur(15px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+            border: 2px solid rgba(0, 102, 204, 0.2);
+        }
+
+        .footer h2 {
+            color: #0066CC;
+            margin-bottom: 20px;
+            font-size: 2.2rem;
+        }
+
+        .footer p {
+            color: #6c757d;
+            font-size: 1.3rem;
+            line-height: 1.6;
+        }
+
+        /* Music Player Styles */
+        .music-player {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: linear-gradient(145deg, rgba(0, 102, 204, 0.9), rgba(255, 182, 193, 0.9));
+            padding: 20px;
+            border-radius: 50px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            z-index: 1000;
+            backdrop-filter: blur(15px);
+            transition: all 0.3s ease;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .music-player:hover {
+            transform: scale(1.05);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.4);
+        }
+
+        .play-btn {
+            background: linear-gradient(45deg, #0066CC, #FF69B4);
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            color: white;
+            font-size: 18px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 102, 204, 0.4);
+        }
+
+        .play-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(0, 102, 204, 0.6);
+        }
+
+        .volume-control {
+            width: 100px;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 3px;
+            outline: none;
+            cursor: pointer;
+        }
+
+        .volume-control::-webkit-slider-thumb {
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            background: linear-gradient(45deg, #0066CC, #FF69B4);
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+        }
+
+        .music-info {
+            color: white;
+            font-size: 14px;
+            font-weight: bold;
+            max-width: 140px;
+        }
+
+        .music-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(145deg, rgba(0, 102, 204, 0.9), rgba(255, 182, 193, 0.9));
+            border: none;
+            border-radius: 30px;
+            padding: 12px 25px;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+            transition: all 0.3s ease;
+            z-index: 1001;
+            backdrop-filter: blur(10px);
+        }
+
+        .music-toggle:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+        }
+
+        /* Slideshow Styles */
+        .slideshow-container {
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+            background: linear-gradient(145deg, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.85));
+            border-radius: 25px;
+            padding: 30px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+            backdrop-filter: blur(20px);
+            border: 2px solid rgba(0, 102, 204, 0.3);
+        }
+
+        .slideshow-wrapper {
+            position: relative;
+            width: 100%;
+            height: 500px;
+            overflow: hidden;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+        }
+
+        .slide {
+            display: none;
+            position: relative;
+            width: 100%;
+            height: 100%;
+            animation: slideIn 0.8s ease-in-out;
+        }
+
+        .slide.active {
+            display: block;
+        }
+
+        .slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 15px;
+        }
+
+        .slide-message {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(transparent, rgba(0, 102, 204, 0.9));
+            color: white;
+            padding: 30px 20px 20px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            text-align: center;
+            border-radius: 0 0 15px 15px;
+            backdrop-filter: blur(10px);
+        }
+
+        .slideshow-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 20px 0;
+            padding: 0 20px;
+        }
+
+        .slide-btn {
+            background: linear-gradient(45deg, #0066CC, #FF69B4);
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            padding: 12px 16px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 102, 204, 0.3);
+        }
+
+        .slide-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(0, 102, 204, 0.5);
+        }
+
+        .slide-counter {
+            background: rgba(0, 102, 204, 0.1);
+            padding: 8px 16px;
+            border-radius: 20px;
+            color: #0066CC;
+            font-weight: bold;
+            backdrop-filter: blur(10px);
+        }
+
+        .slide-dots {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .dot {
+            height: 15px;
+            width: 15px;
+            margin: 0 5px;
+            background-color: rgba(0, 102, 204, 0.3);
+            border-radius: 50%;
+            display: inline-block;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .dot.active, .dot:hover {
+            background-color: #0066CC;
+            transform: scale(1.2);
+        }
+
+        .heart-animation {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+            z-index: 1000;
+        }
+
+        .floating-heart-slide {
+            position: absolute;
+            font-size: 3rem;
+            color: #FF69B4;
+            animation: heartPop 1.5s ease-out forwards;
+            pointer-events: none;
+        }
+
+        /* Animations */
+        @keyframes titlePulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        @keyframes floatVerification {
+            0% {
+                transform: translateY(100px) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        @keyframes countdownPulse {
+            0% { transform: scale(0.5); opacity: 0; }
+            50% { transform: scale(1.2); opacity: 1; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        @keyframes floatUp {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        @keyframes fadeInScale {
+            0% {
+                opacity: 0;
+                transform: scale(0.5);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        @keyframes textReveal {
+            0% {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes wordPop {
+            0% {
+                opacity: 0;
+                transform: translateY(30px) scale(0.8);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); }
+            25% { transform: scale(1.1); }
+            50% { transform: scale(1.2); }
+            75% { transform: scale(1.1); }
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-10px); }
+            60% { transform: translateY(-5px); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10%, 90% {
+                opacity: 1;
+            }
+            50% {
+                transform: translateY(-20px) rotate(180deg);
+            }
+        }
+
+        @keyframes float-particles {
+            0% {
+                transform: translateY(100vh) translateX(-50px);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100px) translateX(50px);
+                opacity: 0;
+            }
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes heartPop {
+            0% {
+                opacity: 0;
+                transform: translate(-50%, -50%) scale(0);
+            }
+            50% {
+                opacity: 1;
+                transform: translate(-50%, -50%) scale(1.5);
+            }
+            100% {
+                opacity: 0;
+                transform: translate(-50%, -50%) scale(0) translateY(-100px);
+            }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .verification-container {
+                padding: 40px 30px;
+                margin: 20px;
+            }
+
+            .verification-title {
+                font-size: 2rem;
+            }
+
+            .verification-subtitle {
+                font-size: 1.1rem;
+            }
+
+            .name-input {
+                font-size: 1.1rem;
+                padding: 18px 20px;
+            }
+
+            .countdown-number {
+                font-size: 5rem;
+            }
+
+            .countdown-text {
+                font-size: 1.2rem;
+            }
+
+            .animated-text {
+                font-size: 2rem;
+                margin: 15px;
+            }
+
+            .gif-container {
+                width: 300px;
+            }
+
+            .header h1 {
+                font-size: 2.8rem;
+            }
+            
+            .header .subtitle {
+                font-size: 1.5rem;
+            }
+            
+            .header .date {
+                font-size: 1.3rem;
+                padding: 8px 16px;
+            }
+            
+            .counter-display {
+                font-size: 2.5rem;
+            }
+
+            .love-messages {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+
+            .message-card {
+                padding: 30px;
+            }
+
+            .slideshow-wrapper {
+                height: 350px;
+            }
+            
+            .slide-message {
+                font-size: 1rem;
+                padding: 20px 15px 15px;
+            }
+            
+            .slideshow-controls {
+                padding: 0 10px;
+            }
+
+            .jahtku-jahtaki-section {
+                padding: 30px 20px;
+            }
+
+            .jahtku-jahtaki-section h2 {
+                font-size: 2rem;
+            }
+
+            .jahtku-jahtaki-section p {
+                font-size: 1.1rem;
+            }
+
+            .gallery-title {
+                font-size: 2rem;
+            }
+
+            .counter-title {
+                font-size: 2rem;
+            }
+
+            .footer h2 {
+                font-size: 1.8rem;
+            }
+
+            .footer p {
+                font-size: 1.1rem;
+            }
+
+            .music-player {
+                bottom: 10px;
+                right: 10px;
+                padding: 15px;
+            }
+
+            .music-info {
+                display: none;
+            }
+
+            .volume-control {
+                width: 60px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .verification-container {
+                padding: 30px 20px;
+                margin: 15px;
+            }
+
+            .verification-title {
+                font-size: 1.8rem;
+            }
+
+            .name-input {
+                font-size: 1rem;
+                padding: 15px 18px;
+            }
+
+            .countdown-number {
+                font-size: 4rem;
+            }
+
+            .animated-text {
+                font-size: 1.5rem;
+            }
+
+            .gif-container {
+                width: 250px;
+            }
+
+            .header h1 {
+                font-size: 2.2rem;
+            }
+
+            .header .subtitle {
+                font-size: 1.2rem;
+            }
+
+            .slideshow-container {
+                padding: 20px;
+            }
+
+            .slideshow-wrapper {
+                height: 300px;
+            }
+
+            .container {
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Name Verification Screen -->
+    <div class="name-verification" id="nameVerification">
+        <div class="verification-hearts" id="verificationHearts"></div>
+        
+        <div class="verification-container">
+            <h1 class="verification-title">💙 Welcome! 💙</h1>
+            <p class="verification-subtitle">Please enter your full name to continue</p>
+            
+            <div class="name-input-container">
+                <input 
+                    type="text" 
+                    class="name-input" 
+                    id="nameInput" 
+                    placeholder="Enter your full name..."
+                    autocomplete="off"
+                >
+            </div>
+            
+            <div class="progress-container" id="progressContainer">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+                <div class="progress-text" id="progressText">
+                    <span class="progress-emoji" id="progressEmoji">🤖</span>
+                    <span id="progressMessage">Start typing your name...</span>
+                </div>
+            </div>
+            
+            <button class="submit-btn" id="submitBtn" onclick="verifyName()">
+                Continue to Anniversary 💙
+            </button>
+            
+            <div class="error-message" id="errorMessage">
+                Hmm, that doesn't look right. Try again! 💕
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Screen -->
+    <div class="loading-screen" id="loadingScreen">
+        <div class="loading-hearts" id="loadingHearts"></div>
+        
+        <div class="countdown-container" id="countdownContainer">
+            <div class="countdown-number" id="countdownNumber">5</div>
+            <div class="countdown-text">Get ready for something special...</div>
+        </div>
+
+        <div class="gif-container" id="gifContainer">
+            <div class="tenor-gif-embed" data-postid="19935260" data-share-method="host" data-aspect-ratio="1.47465" data-width="100%">
+                <a href="https://tenor.com/view/hug-love-happy-joyous-nobita-gif-19935260">Hug Love GIF</a>
+                from <a href="https://tenor.com/search/hug-gifs">Hug GIFs</a>
+            </div>
+        </div>
+
+        <div class="animated-text" id="animatedText">
+            <span class="word">Happy</span>
+            <span class="word">Anniversary</span>
+            <span class="word">My</span>
+            <span class="word">Love</span>
+            <span class="word">💙</span>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content" id="mainContent">
+        <!-- Background Animation -->
+        <div class="bg-animation" id="bgAnimation"></div>
+
+        <!-- Music Player -->
+        <div class="music-player" id="musicPlayer">
+            <div class="music-controls">
+                <button class="play-btn" id="playBtn" onclick="toggleMusic()">▶</button>
+                <input type="range" class="volume-control" id="volumeControl" min="0" max="1" step="0.1" value="0.3">
+                <div class="music-info" id="musicInfo">Jahtku Theme 🤖💙</div>
+            </div>
+        </div>
+
+        <button class="music-toggle" id="musicToggle" onclick="toggleMusicPlayer()">🎵 Music</button>
+
+        <!-- Hidden Audio Element -->
+        <audio id="backgroundMusic" loop preload="auto">
+            <source src="https://www.soundjay.com/misc/sounds/romantic-music.mp3" type="audio/mpeg">
+            <source src="https://www.bensound.com/bensound-music/bensound-romantic.mp3" type="audio/mpeg">
+        </audio>
+
+        <div class="floating-hearts" id="floating-hearts"></div>
+        
+        <div class="container">
+            <header class="header">
+                <h1>Happy Anniversary <span class="heart">💙</span></h1>
+                <div class="subtitle">Allu ka Parth</div>
+                <div class="date">June 25th, 2018 - Our Love Story Began</div>
+            </header>
+
+            <section class="jahtku-jahtaki-section">
+                <h2>Just Like Jahtku & Jahtaki 🤖💙👧</h2>
+                <p>Like Jahtku's endless love for Jahtaki, my love for you knows no bounds. You are my Jahtaki, and I am your devoted Jahtku, always ready to make your dreams come true with my magic of love!</p>
+                <p>Since June 25th, 2018, we've been writing our own beautiful love story, just like the timeless tale of Jahtku and Jahtaki. Every day with you feels like a magical adventure! 🌟</p>
+            </section>
+
+            <section class="love-messages">
+                <div class="message-card jahtku-theme">
+                    <h3>My Dearest Jahtaki (Allu) 🤖<span class="heart">💙</span></h3>
+                    <p>Just like Jahtku's gadgets, my love for you is magical and endless. From June 25th, 2018, you became my everything. You are my sunshine, my happiness, and my forever love, my sweet Jahtaki!</p>
+                </div>
+                
+                <div class="message-card jahtaki-theme">
+                    <h3>To My Jahtku (Parth) 👧<span class="heart">💙</span></h3>
+                    <p>You are not just my partner, but my magical companion who makes everything possible. Like Jahtaki trusts Jahtku, I trust you completely. Together, we've created a love story more beautiful than any fairy tale.</p>
+                </div>
+                
+                <div class="message-card jahtku-theme">
+                    <h3>Forever & Always 🤖👧<span class="heart">💙</span></h3>
+                    <p>Through all the seasons of life since 2018, your love has been my constant magic. Like Jahtku's time machine, our love transcends time and makes ordinary moments extraordinary.</p>
+                </div>
+                
+                <div class="message-card jahtaki-theme">
+                    <h3>My Heart's Home 💙<span class="heart">💙</span></h3>
+                    <p>In your arms, I've found my home. In your eyes, I see my future. Like Jahtku and Jahtaki's eternal bond, our love is destined to last forever. Here's to many more magical years together!</p>
+                </div>
+
+                <div class="message-card jahtku-theme">
+                    <h3>Years of Magic 🌟<span class="heart">💙</span></h3>
+                    <p>Since that magical day in June 2018, we've built something incredible together. Every laugh, every adventure, every moment has made our bond stronger, just like Jahtku and Jahtaki's timeless friendship turned into love.</p>
+                </div>
+
+                <div class="message-card jahtaki-theme">
+                    <h3>Allu, My Jahtaki 👧<span class="heart">💙</span></h3>
+                    <p>You've been my anchor, my joy, and my inspiration for all these years. Thank you for choosing to love me every single day since June 25th, 2018. Like Jahtaki's gentle heart, you make everything beautiful. I love you endlessly!</p>
+                </div>
+            </section>
+
+            <section class="photo-gallery">
+        <h2 class="gallery-title">Our Journey Together 🤖👧💙</h2>
+        
+        <div class="slideshow-container">
+            <div class="slideshow-wrapper">
+                <div class="slide active" data-message="Vapi Depot - Every journey started here, every adventure began with you! 🚌💕">
+                    <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/1%20vapi%20deop-4ZWpjuEiGXjjTRfzMtEKoCyhtWujpz.jpeg" alt="Vapi Depot">
+                    <div class="slide-message">Vapi Depot - Every journey started here, every adventure began with you! 🚌💕</div>
+                </div>
+                
+                <div class="slide" data-message="SSR College Canteen - Sharing meals and sharing dreams! 🍽️💕">
+                    <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/%202%20ssr%20canteen.jpg-hre18p0ENDtrdKOwMgMO7cFDDvuzC8.jpeg" alt="SSR Canteen">
+                    <div class="slide-message">SSR College Canteen - Sharing meals and sharing dreams! 🍽️💕</div>
+                </div>
+                
+                <div class="slide" data-message="Nakshatra Van - Our romantic gazebo moments, creating magical memories! 🏛️💙">
+                    <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/3%20nakshatra%20van%20-Q3jAMGn48Siw0W1pW0QpmlvKHgrBNG.jpeg" alt="Nakshatra Van">
+                    <div class="slide-message">Nakshatra Van - Our romantic gazebo moments, creating magical memories! 🏛️💙</div>
+                </div>
+                
+                <div class="slide" data-message="Silvassa Depot - Waiting for you was always worth it, my love! 🚌💕">
+                    <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/4%20slivas%20deop%20-5XQnfxR9kgEm7FlsyWEbOVjZpCQsw6.webp" alt="Silvassa Depot">
+                    <div class="slide-message">Silvassa Depot - Waiting for you was always worth it, my love! 🚌💕</div>
+                </div>
+                
+                <div class="slide" data-message="KBS College Classroom - Learning together, growing together, loving together! 📚💙">
+                    <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/5%20kbs%20clg-tgIK2ynG4bJoZ5UfMWOVOSlslgsJkP.webp" alt="KBS College">
+                    <div class="slide-message">KBS College Classroom - Learning together, growing together, loving together! 📚💙</div>
+                </div>
+                
+                <div class="slide" data-message="Our train journeys together - Every mile brought us closer! 🚂💙">
+                    <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/%206%20karnavati-wGzze6P7MMH9IJtk4oq7zz5yQiq9dY.jpeg" alt="Karnavati Train">
+                    <div class="slide-message">Our train journeys together - Every mile brought us closer! 🚂💙</div>
+                </div>
+                
+                <div class="slide" data-message="Anand Station - Where we waited for each other and for our dreams! 🚉💙">
+                    <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/%207%20anand%20station.jpg-dWnMDYjXXpwSFg77hAKTKEpt7X5Dyb.jpeg" alt="Anand Station">
+                    <div class="slide-message">Anand Station - Where we waited for each other and for our dreams! 🚉💙</div>
+                </div>
+                
+                <div class="slide" data-message="Shastri Maidan - Our peaceful walks under the trees, just like Jahtku and Jahtaki! 🌳💙">
+                    <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/%208shastri%20maidan%20-l5tJbLSXDelJ8XJjGvKQPPNCix94b3.webp" alt="Shastri Maidan">
+                    <div class="slide-message">Shastri Maidan - Our peaceful walks under the trees, just like Jahtku and Jahtaki! 🌳💙</div>
+                </div>
+                
+                <div class="slide" data-message="Coffee dates at Mota Bazar - Sweet moments over sweet coffee! ☕💕">
+                    <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/%209mota%20bazar%20cold%20coffe.jpg-rliC7XeZ28cwhWXYT81fiAd1UcJDWh.jpeg" alt="Mota Bazar Cold Coffee">
+                    <div class="slide-message">Coffee dates at Mota Bazar - Sweet moments over sweet coffee! ☕💕</div>
+                </div>
+                
+                <div class="slide" data-message="R.S. Girls Hostel - Where my Jahtaki stayed, and I waited outside like Jahtku! 🏠💕">
+                    <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/%2010%20r%20s%20girls%20hotel-u9akBARUucgHXQr7pkCgN72E7AIzmn.webp" alt="R.S. Girls Hostel">
+                    <div class="slide-message">R.S. Girls Hostel - Where my Jahtaki stayed, and I waited outside like Jahtku! 🏠💕</div>
+                </div>
+                
+                <div class="slide" data-message="G.H. Patel Classroom - Where we learned and dreamed together! 📚💙">
+                    <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/%2011%20ghpatel%20class-f4pl82UarpYC9GtaORsOnE0HAdFVd7.webp" alt="G.H. Patel Class">
+                    <div class="slide-message">G.H. Patel Classroom - Where we learned and dreamed together! 📚💙</div>
+                </div>
+                
+                <div class="slide" data-message="Our Beautiful Building - Where our dreams reached new heights! 🏢💙">
+                    <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/%2012%20Building%202-H0OvvWag43l6Ok2pOQsmuKub86PNNM.webp" alt="Building">
+                    <div class="slide-message">Our Beautiful Building - Where our dreams reached new heights! 🏢💙</div>
+                </div>
+            </div>
+            
+            <div class="slideshow-controls">
+                <button class="slide-btn prev-btn" onclick="changeSlide(-1)">❮</button>
+                <div class="slide-counter">
+                    <span id="currentSlide">1</span> / <span id="totalSlides">12</span>
+                </div>
+                <button class="slide-btn next-btn" onclick="changeSlide(1)">❯</button>
+            </div>
+            
+            <div class="slide-dots">
+                <span class="dot active" onclick="currentSlide(1)"></span>
+                <span class="dot" onclick="currentSlide(2)"></span>
+                <span class="dot" onclick="currentSlide(3)"></span>
+                <span class="dot" onclick="currentSlide(4)"></span>
+                <span class="dot" onclick="currentSlide(5)"></span>
+                <span class="dot" onclick="currentSlide(6)"></span>
+                <span class="dot" onclick="currentSlide(7)"></span>
+                <span class="dot" onclick="currentSlide(8)"></span>
+                <span class="dot" onclick="currentSlide(9)"></span>
+                <span class="dot" onclick="currentSlide(10)"></span>
+                <span class="dot" onclick="currentSlide(11)"></span>
+                <span class="dot" onclick="currentSlide(12)"></span>
+            </div>
+            
+            <div class="heart-animation" id="heartAnimation"></div>
+        </div>
+    </section>
+
+            <section class="anniversary-counter">
+                <h2 class="counter-title">Our Magical Journey 🤖💙👧</h2>
+                <div class="counter-display" id="counter">
+                    Calculating our beautiful journey...
+                </div>
+                <p class="counter-subtitle">And counting every precious moment since June 25th, 2018 <span class="heart">💙</span></p>
+            </section>
+
+            <footer class="footer">
+                <h2>With All My Love 🤖<span class="heart">💙</span>👧</h2>
+                <p>Happy Anniversary, my darling Jahtaki (Allu)! From your Jahtku (Parth), with endless love and gratitude for every magical moment we've shared since 2018. Like Jahtku's promise to Jahtaki, I promise to love you forever and a day! ���💙</p>
+            </footer>
+        </div>
+    </div>
+
+    <!-- Tenor GIF Script -->
+    <script type="text/javascript" async src="https://tenor.com/embed.js"></script>
+
+    <script>
+        // Name verification variables
+        const correctName = "khushboo kanojiya";
+        let currentInput = "";
+        let verificationStep = 0;
+
+        // Progress tracking
+        const progressSteps = [
+            { emoji: "🤖", message: "Start typing your name...", progress: 0 },
+            { emoji: "👀", message: "Keep going...", progress: 20 },
+            { emoji: "💭", message: "Getting closer...", progress: 40 },
+            { emoji: "😊", message: "Almost there...", progress: 60 },
+            { emoji: "💕", message: "So close...", progress: 80 },
+            { emoji: "🎉", message: "Perfect! Welcome Khushboo!", progress: 100 }
+        ];
+
+        // Initialize name verification
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeNameVerification();
+        });
+
+        function initializeNameVerification() {
+            const nameInput = document.getElementById('nameInput');
+            const progressFill = document.getElementById('progressFill');
+            const progressEmoji = document.getElementById('progressEmoji');
+            const progressMessage = document.getElementById('progressMessage');
+            const submitBtn = document.getElementById('submitBtn');
+            const errorMessage = document.getElementById('errorMessage');
+
+            // Create verification hearts
+            createVerificationHearts();
+
+            // Input event listener
+            nameInput.addEventListener('input', function(e) {
+                currentInput = e.target.value.toLowerCase().trim();
+                updateProgress();
+            });
+
+            // Enter key listener
+            nameInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter' && submitBtn.classList.contains('active')) {
+                    verifyName();
+                }
+            });
+        }
+
+        function createVerificationHearts() {
+            const heartsContainer = document.getElementById('verificationHearts');
+            const heartSymbols = ['💙', '💕', '💖', '💝', '💗', '🤖', '👧'];
+            
+            setInterval(() => {
+                const heart = document.createElement('div');
+                heart.className = 'verification-heart';
+                heart.innerHTML = heartSymbols[Math.floor(Math.random() * heartSymbols.length)];
+                heart.style.left = Math.random() * 100 + '%';
+                heart.style.color = ['#0066CC', '#FFB6C1', '#DDA0DD', '#87CEEB'][Math.floor(Math.random() * 4)];
+                heart.style.animationDuration = (Math.random() * 2 + 3) + 's';
+                
+                heartsContainer.appendChild(heart);
+                
+                setTimeout(() => {
+                    heart.remove();
+                }, 4000);
+            }, 500);
+        }
+
+        function updateProgress() {
+            const progressFill = document.getElementById('progressFill');
+            const progressEmoji = document.getElementById('progressEmoji');
+            const progressMessage = document.getElementById('progressMessage');
+            const submitBtn = document.getElementById('submitBtn');
+            const errorMessage = document.getElementById('errorMessage');
+
+            // Hide error message when typing
+            errorMessage.classList.remove('show');
+
+            // Calculate similarity
+            let similarity = 0;
+            if (currentInput.length > 0) {
+                // Check how many characters match
+                let matches = 0;
+                const minLength = Math.min(currentInput.length, correctName.length);
+                
+                for (let i = 0; i < minLength; i++) {
+                    if (currentInput[i] === correctName[i]) {
+                        matches++;
+                    }
+                }
+                
+                similarity = (matches / correctName.length) * 100;
+            }
+
+            // Determine progress step
+            let stepIndex = 0;
+            if (similarity >= 90) stepIndex = 5;
+            else if (similarity >= 70) stepIndex = 4;
+            else if (similarity >= 50) stepIndex = 3;
+            else if (similarity >= 30) stepIndex = 2;
+            else if (similarity >= 10) stepIndex = 1;
+
+            const step = progressSteps[stepIndex];
+
+            // Update UI
+            progressFill.style.width = step.progress + '%';
+            progressEmoji.textContent = step.emoji;
+            progressMessage.textContent = step.message;
+
+            // Animate emoji
+            progressEmoji.style.animation = 'none';
+            setTimeout(() => {
+                progressEmoji.style.animation = 'bounce 0.6s ease-in-out';
+            }, 10);
+
+            // Enable/disable submit button
+            if (currentInput === correctName) {
+                submitBtn.classList.add('active');
+            } else {
+                submitBtn.classList.remove('active');
+            }
+        }
+
+        function verifyName() {
+            const errorMessage = document.getElementById('errorMessage');
+            
+            if (currentInput === correctName) {
+                // Success! Start the loading sequence
+                const nameVerification = document.getElementById('nameVerification');
+                nameVerification.classList.add('hidden');
+                
+                setTimeout(() => {
+                    startLoadingSequence();
+                }, 1000);
+            } else {
+                // Show error message
+                errorMessage.classList.add('show');
+                
+                // Shake the input
+                const nameInput = document.getElementById('nameInput');
+                nameInput.style.animation = 'none';
+                setTimeout(() => {
+                    nameInput.style.animation = 'shake 0.5s ease-in-out';
+                }, 10);
+            }
+        }
+
+        // Loading sequence variables
+        let countdownValue = 5;
+        let loadingStep = 0;
+
+        function startLoadingSequence() {
+            const loadingScreen = document.getElementById('loadingScreen');
+            loadingScreen.classList.add('show');
+            
+            // Create loading hearts
+            createLoadingHearts();
+            
+            // Start countdown
+            startCountdown();
+        }
+
+        function createLoadingHearts() {
+            const heartsContainer = document.getElementById('loadingHearts');
+            const heartSymbols = ['💙', '💕', '💖', '💝', '💗', '🤖', '👧'];
+            
+            setInterval(() => {
+                const heart = document.createElement('div');
+                heart.className = 'loading-heart';
+                heart.innerHTML = heartSymbols[Math.floor(Math.random() * heartSymbols.length)];
+                heart.style.left = Math.random() * 100 + '%';
+                heart.style.color = ['#0066CC', '#FFB6C1', '#DDA0DD', '#87CEEB'][Math.floor(Math.random() * 4)];
+                heart.style.animationDuration = (Math.random() * 2 + 2) + 's';
+                
+                heartsContainer.appendChild(heart);
+                
+                setTimeout(() => {
+                    heart.remove();
+                }, 3000);
+            }, 300);
+        }
+
+        function startCountdown() {
+            const countdownNumber = document.getElementById('countdownNumber');
+            
+            const countdownInterval = setInterval(() => {
+                countdownNumber.textContent = countdownValue;
+                countdownNumber.style.animation = 'none';
+                setTimeout(() => {
+                    countdownNumber.style.animation = 'countdownPulse 1s ease-in-out';
+                }, 10);
+                
+                countdownValue--;
+                
+                if (countdownValue < 0) {
+                    clearInterval(countdownInterval);
+                    showGif();
+                }
+            }, 1000);
+        }
+
+        function showGif() {
+            const countdownContainer = document.getElementById('countdownContainer');
+            const gifContainer = document.getElementById('gifContainer');
+            
+            countdownContainer.style.display = 'none';
+            gifContainer.classList.add('show');
+            
+            // Show animated text after 2 seconds
+            setTimeout(showAnimatedText, 2000);
+        }
+
+        function showAnimatedText() {
+            const gifContainer = document.getElementById('gifContainer');
+            const animatedText = document.getElementById('animatedText');
+            
+            gifContainer.style.display = 'none';
+            animatedText.classList.add('show');
+            
+            // Show main content after 3 seconds
+            setTimeout(showMainContent, 3000);
+        }
+
+        function showMainContent() {
+            const loadingScreen = document.getElementById('loadingScreen');
+            const mainContent = document.getElementById('mainContent');
+            
+            loadingScreen.classList.add('hidden');
+            mainContent.classList.add('show');
+            
+            // Initialize main content after loading screen is hidden
+            setTimeout(initializeMainContent, 1000);
+        }
+
+        function initializeMainContent() {
+            // Anniversary date calculation from June 25, 2018
+            updateCounter();
+            setInterval(updateCounter, 60000); // Update every minute
+            
+            // Create floating hearts periodically
+            setInterval(createFloatingHeart, 1500);
+            
+            // Create background particles
+            setInterval(createParticle, 3000);
+            
+            // Create initial effects
+            for (let i = 0; i < 8; i++) {
+                setTimeout(createFloatingHeart, i * 300);
+            }
+            
+            for (let i = 0; i < 10; i++) {
+                setTimeout(createParticle, i * 500);
+            }
+
+            // Initialize slideshow
+            showSlide(slideIndex);
+        }
+
+        // Anniversary date calculation from June 25, 2018
+        function updateCounter() {
+            const relationshipStart = new Date('2018-06-25');
+            const now = new Date();
+            const timeDiff = now - relationshipStart;
+            
+            const years = Math.floor(timeDiff / (1000 * 60 * 60 * 24 * 365.25));
+            const days = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((timeDiff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((timeDiff % (1000 * 60 * 60)) / (1000 * 60));
+            
+            const counterElement = document.getElementById('counter');
+            if (counterElement) {
+                counterElement.innerHTML = 
+                    `${years} Magical Years, ${days - (years * 365)} Days<br>
+                    <span style="font-size: 2rem;">${hours} Hours, ${minutes} Minutes</span>`;
+            }
+        }
+
+        // Create floating hearts with Jahtku theme
+        function createFloatingHeart() {
+            const heart = document.createElement('div');
+            heart.className = 'floating-heart';
+            const symbols = ['🤖', '👧', '💙', '💕', '🌟', '⭐'];
+            heart.innerHTML = symbols[Math.floor(Math.random() * symbols.length)];
+            heart.style.left = Math.random() * 100 + '%';
+            heart.style.animationDuration = (Math.random() * 4 + 4) + 's';
+            heart.style.animationDelay = Math.random() * 2 + 's';
+            heart.style.fontSize = (Math.random() * 10 + 20) + 'px';
+            heart.style.color = ['#0066CC', '#FFB6C1', '#DDA0DD', '#87CEEB'][Math.floor(Math.random() * 4)];
+            
+            const heartsContainer = document.getElementById('floating-hearts');
+            if (heartsContainer) {
+                heartsContainer.appendChild(heart);
+                
+                setTimeout(() => {
+                    heart.remove();
+                }, 8000);
+            }
+        }
+
+        // Create background particles
+        function createParticle() {
+            const particle = document.createElement('div');
+            particle.className = 'particle ' + (Math.random() > 0.5 ? 'jahtku-particle' : 'jahtaki-particle');
+            particle.style.left = Math.random() * 100 + '%';
+            particle.style.animationDuration = Math.random() * 10 + 10 + 's';
+            particle.style.animationDelay = Math.random() * 5 + 's';
+            
+            const bgAnimation = document.getElementById('bgAnimation');
+            if (bgAnimation) {
+                bgAnimation.appendChild(particle);
+                
+                setTimeout(() => {
+                    particle.remove();
+                }, 15000);
+            }
+        }
+
+        // Slideshow functionality
+        let slideIndex = 1;
+        const totalSlides = 12;
+
+        function changeSlide(n) {
+            showSlide(slideIndex += n);
+            createHeartAnimation();
+        }
+
+        function currentSlide(n) {
+            showSlide(slideIndex = n);
+            createHeartAnimation();
+        }
+
+        function showSlide(n) {
+            const slides = document.getElementsByClassName('slide');
+            const dots = document.getElementsByClassName('dot');
+            
+            if (n > totalSlides) { slideIndex = 1; }
+            if (n < 1) { slideIndex = totalSlides; }
+            
+            // Hide all slides
+            for (let i = 0; i < slides.length; i++) {
+                slides[i].classList.remove('active');
+            }
+            
+            // Remove active class from all dots
+            for (let i = 0; i < dots.length; i++) {
+                dots[i].classList.remove('active');
+            }
+            
+            // Show current slide and activate corresponding dot
+            if (slides[slideIndex - 1]) {
+                slides[slideIndex - 1].classList.add('active');
+            }
+            if (dots[slideIndex - 1]) {
+                dots[slideIndex - 1].classList.add('active');
+            }
+            
+            // Update counter
+            const currentSlideElement = document.getElementById('currentSlide');
+            if (currentSlideElement) {
+                currentSlideElement.textContent = slideIndex;
+            }
+        }
+
+        function createHeartAnimation() {
+            const heartContainer = document.getElementById('heartAnimation');
+            if (!heartContainer) return;
+            
+            const hearts = ['💙', '💕', '💖', '💝', '💗', '🤖', '👧'];
+            
+            // Create multiple hearts
+            for (let i = 0; i < 5; i++) {
+                setTimeout(() => {
+                    const heart = document.createElement('div');
+                    heart.className = 'floating-heart-slide';
+                    heart.innerHTML = hearts[Math.floor(Math.random() * hearts.length)];
+                    heart.style.left = (Math.random() * 200 - 100) + 'px';
+                    heart.style.top = (Math.random() * 200 - 100) + 'px';
+                    
+                    heartContainer.appendChild(heart);
+                    
+                    setTimeout(() => {
+                        heart.remove();
+                    }, 1500);
+                }, i * 100);
+            }
+        }
+
+        // Auto-slide functionality
+        function autoSlide() {
+            slideIndex++;
+            if (slideIndex > totalSlides) {
+                slideIndex = 1;
+            }
+            showSlide(slideIndex);
+        }
+
+        // Auto-advance slides every 8 seconds (only after main content is loaded)
+        setTimeout(() => {
+            setInterval(autoSlide, 8000);
+        }, 15000);
+
+        // Add click effect to message cards
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(() => {
+                document.querySelectorAll('.message-card').forEach(card => {
+                    card.addEventListener('click', function() {
+                        this.style.transform = 'scale(1.02) translateY(0)';
+                        setTimeout(() => {
+                            this.style.transform = 'scale(1) translateY(0)';
+                        }, 200);
+                    });
+                });
+            }, 15000);
+        });
+
+        // Music Player Functionality
+        let isPlaying = false;
+        let musicPlayerVisible = true;
+
+        function toggleMusic() {
+            const audio = document.getElementById('backgroundMusic');
+            const playBtn = document.getElementById('playBtn');
+            
+            if (isPlaying) {
+                audio.pause();
+                playBtn.innerHTML = '▶';
+                isPlaying = false;
+            } else {
+                audio.play().then(() => {
+                    playBtn.innerHTML = '⏸';
+                    isPlaying = true;
+                }).catch((error) => {
+                    console.log('Audio play failed:', error);
+                    alert('Click anywhere on the page first, then try playing music again! 🎵');
+                });
+            }
+        }
+
+        function toggleMusicPlayer() {
+            const musicPlayer = document.getElementById('musicPlayer');
+            const musicToggle = document.getElementById('musicToggle');
+            
+            if (musicPlayerVisible) {
+                musicPlayer.style.display = 'none';
+                musicToggle.innerHTML = '🎵 Show Music';
+                musicPlayerVisible = false;
+            } else {
+                musicPlayer.style.display = 'flex';
+                musicToggle.innerHTML = '🎵 Hide Music';
+                musicPlayerVisible = true;
+            }
+        }
+
+        // Initialize music player after main content loads
+        setTimeout(() => {
+            const audio = document.getElementById('backgroundMusic');
+            const volumeControl = document.getElementById('volumeControl');
+            
+            if (audio && volumeControl) {
+                audio.volume = 0.3;
+                
+                volumeControl.addEventListener('input', function() {
+                    audio.volume = this.value;
+                });
+
+                audio.addEventListener('ended', function() {
+                    const playBtn = document.getElementById('playBtn');
+                    if (playBtn) {
+                        playBtn.innerHTML = '▶';
+                        isPlaying = false;
+                    }
+                });
+
+                // Music playlist rotation
+                const romanticPlaylist = [
+                    "Jahtku Theme 🤖💙",
+                    "Allu & Parth Forever 💕", 
+                    "Jahtaki's Melody 👧🎵",
+                    "Since 2018 Magic 🌟",
+                    "Our Love Story 💙"
+                ];
+
+                let currentSong = 0;
+                function nextSong() {
+                    currentSong = (currentSong + 1) % romanticPlaylist.length;
+                    const musicInfo = document.getElementById('musicInfo');
+                    if (musicInfo) {
+                        musicInfo.textContent = romanticPlaylist[currentSong];
+                    }
+                }
+
+                setInterval(nextSong, 25000);
+            }
+        }, 15000);
+
+        // Add shake animation for wrong name
+        const shakeKeyframes = `
+            @keyframes shake {
+                0%, 100% { transform: translateX(0); }
+                10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+                20%, 40%, 60%, 80% { transform: translateX(5px); }
+            }
+        `;
+        
+        const style = document.createElement('style');
+        style.textContent = shakeKeyframes;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>
